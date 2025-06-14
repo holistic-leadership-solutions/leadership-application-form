@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Development Partnership Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0C3C60 0%, #1a5a8a 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0C3C60 0%, #1a5a8a 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .intro-section {
+            padding: 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .intro-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .intro-content h2 {
+            color: #0C3C60;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .intro-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .qualification-box {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+            border: 2px solid #27ae60;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .qualification-box h3 {
+            color: #27ae60;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .qualification-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .qualification-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #0C3C60;
+            font-weight: 500;
+        }
+        
+        .qualification-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #0C3C60;
+            margin-bottom: 10px;
+            font-weight: 600;
+            border-left: 4px solid #0C3C60;
+            padding-left: 20px;
+        }
+        
+        .section-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            padding-left: 24px;
+            font-style: italic;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #0C3C60;
+            font-size: 1rem;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0C3C60;
+            box-shadow: 0 0 0 3px rgba(12, 60, 96, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.5;
+        }
+        
+        .pain-point-section {
+            background: #fff3cd;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .pain-point-section h3 {
+            color: #856404;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-option:hover {
+            border-color: #0C3C60;
+            background: #f0f4f8;
+        }
+        
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 2px;
+            width: auto;
+        }
+        
+        .checkbox-option label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 500;
+        }
+        
+        .investment-section {
+            background: #e8f5e8;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .investment-section h3 {
+            color: #27ae60;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .submit-section {
+            background: #f8f9fa;
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #0C3C60 0%, #1a5a8a 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(12, 60, 96, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(12, 60, 96, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+            color: #0C3C60;
+        }
+        
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .next-steps {
+            margin-top: 25px;
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+            
+            .intro-section, .form-section {
+                padding: 20px;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0C3C60, #1a5a8a);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        
+        <div class="header">
+            <h1>Partnership Application</h1>
+            <p>Let's explore if we're the right fit to transform your organization's leadership culture together</p>
+        </div>
+        
+        <div class="intro-section">
+            <div class="intro-content">
+                <h2>Before We Begin...</h2>
+                <p>Our comprehensive leadership development programs create transformational results, but they're not right for every organization. We work exclusively with companies that are serious about sustainable culture change and have the commitment to see it through.</p>
+                
+                <div class="qualification-box">
+                    <h3>We're the Right Fit If Your Organization Has:</h3>
+                    <ul class="qualification-list">
+                        <li>100+ employees with multiple layers of management</li>
+                        <li>$10M+ annual revenue and established business operations</li>
+                        <li>Leadership team committed to 12-18 month transformation process</li>
+                        <li>Budget of $75K+ for comprehensive leadership development</li>
+                        <li>Willingness to measure and be accountable for results</li>
+                        <li>Recognition that culture change requires systematic approach</li>
+                    </ul>
+                </div>
+                
+                <p><strong>This application takes 8-10 minutes to complete thoughtfully.</strong> Your responses help us understand if we can deliver the transformational results you're seeking.</p>
+            </div>
+        </div>
+        
+        <form id="applicationForm">
+            <div class="form-section">
+                <h2 class="section-title">Organization Overview</h2>
+                <p class="section-subtitle">Help us understand your company's current state</p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Your Title <span class="required">*</span></label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company Name <span class="required">*</span></label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry">Industry <span class="required">*</span></label>
+                        <select id="industry" name="industry" required>
+                            <option value="">Select Industry</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="professional-services">Professional Services</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="technology">Technology</option>
+                            <option value="financial-services">Financial Services</option>
+                            <option value="retail">Retail</option>
+                            <option value="education">Education</option>
+                            <option value="non-profit">Non-Profit</option>
+                            <option value="government">Government</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employees">Number of Employees <span class="required">*</span></label>
+                        <select id="employees" name="employees" required>
+                            <option value="">Select Range</option>
+                            <option value="0-49">0-49</option>
+                            <option value="50-99">50-99</option>
+                            <option value="100-249">100-249</option>
+                            <option value="250-499">250-499</option>
+                            <option value="500-999">500-999</option>
+                            <option value="1000+">1000+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="revenue">Annual Revenue <span class="required">*</span></label>
+                        <select id="revenue" name="revenue" required>
+                            <option value="">Select Range</option>
+                            <option value="less-than-1M">Less than $1 million</option>
+                            <option value="1-5M">$1 million - $5 million</option>
+                            <option value="5-10M">$5M - $10M</option>
+                            <option value="10-25M">$10M - $25M</option>
+                            <option value="25-50M">$25M - $50M</option>
+                            <option value="50-100M">$50M - $100M</option>
+                            <option value="100M+">$100M+</option>
+                            <option value="prefer-not-to-disclose">Prefer not to disclose</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="managers">Number of Managers/Supervisors <span class="required">*</span></label>
+                        <input type="number" id="managers" name="managers" min="1" max="500" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="section-title">Current Leadership Challenges</h2>
+                <p class="section-subtitle">Select all that apply - this helps us understand your specific challenges</p>
+                
+                <div class="pain-point-section">
+                    <h3>What leadership challenges is your organization facing right now? (Select all that apply)</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge1" name="primaryChallenges" value="putting-out-fires">
+                            <label for="challenge1"><strong>Always putting out fires instead of leading with vision</strong><br>Reactive management, crisis mode, no time for strategic thinking</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge2" name="primaryChallenges" value="carrying-team">
+                            <label for="challenge2"><strong>Carrying a team that won't move without you</strong><br>Over-dependence on you, lack of initiative, micro-management trap</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge3" name="primaryChallenges" value="managers-floundering">
+                            <label for="challenge3"><strong>Watching talented managers flounder because they were never taught to lead</strong><br>Good technical skills but poor leadership abilities, struggling with people management</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge4" name="primaryChallenges" value="losing-best-people">
+                            <label for="challenge4"><strong>Losing your best people to burnout, disconnection, or unclear expectations</strong><br>High turnover among top performers, engagement issues, communication problems</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge5" name="primaryChallenges" value="sustainability-question">
+                            <label for="challenge5"><strong>Asking yourself, "Is this really sustainable?"</strong><br>Current pace and approach feels unsustainable, need for systematic change</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge6" name="primaryChallenges" value="high-turnover">
+                            <label for="challenge6"><strong>High Manager/Employee Turnover</strong><br>Leaders leaving, difficulty retaining talent, constant recruiting</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge7" name="primaryChallenges" value="inconsistent-leadership">
+                            <label for="challenge7"><strong>Inconsistent Leadership Quality</strong><br>Some great managers, others struggling, no standard approach</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge8" name="primaryChallenges" value="scaling-culture">
+                            <label for="challenge8"><strong>Scaling Culture</strong><br>Growing fast but culture diluting, leadership not keeping pace</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge9" name="primaryChallenges" value="performance-issues">
+                            <label for="challenge9"><strong>Performance & Accountability Issues</strong><br>Teams underperforming, lack of accountability, missed goals</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge10" name="primaryChallenges" value="communication-silos">
+                            <label for="challenge10"><strong>Communication & Collaboration Problems</strong><br>Silos, poor communication, conflict between departments</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="challenge11" name="primaryChallenges" value="succession-planning">
+                            <label for="challenge11"><strong>Leadership Pipeline Gaps</strong><br>No clear succession plan, leaders retiring, promoting wrong people</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="specificChallenge">Describe your specific situation in detail (What's happening? How long has this been an issue? What's the impact?) <span class="required">*</span></label>
+                    <textarea id="specificChallenge" name="specificChallenge" placeholder="Be as specific as possible. For example: 'Our turnover rate hit 45% last year, particularly in middle management. We've lost 3 department heads in 6 months, and exit interviews consistently mention poor management and lack of development opportunities. This is costing us approximately $800K annually in recruiting and training costs, plus lost productivity...'" required></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="previousEfforts">What have you tried before to address these leadership challenges? What worked? What didn't? <span class="required">*</span></label>
+                    <textarea id="previousEfforts" name="previousEfforts" placeholder="Examples: Individual coaching, online training modules, leadership conferences, consultants, internal programs, etc. Be honest about what didn't work and why." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="urgency">How urgent is solving this problem? <span class="required">*</span></label>
+                    <select id="urgency" name="urgency" required>
+                        <option value="">Select Timeline</option>
+                        <option value="immediate">Immediate - We need to start within 30 days</option>
+                        <option value="quarter">This Quarter - Within 3 months</option>
+                        <option value="planning">Planning Phase - 3-6 months</option>
+                        <option value="exploring">Just Exploring - 6+ months</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="section-title">Success Metrics & Commitment</h2>
+                <p class="section-subtitle">How will we measure success together?</p>
+                
+                <div class="form-group full-width">
+                    <label for="successMetrics">How would you measure the success of a leadership development program? (Check all that apply)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric1" name="successMetrics" value="turnover-reduction">
+                            <label for="metric1">Reduced turnover rates</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric2" name="successMetrics" value="engagement-scores">
+                            <label for="metric2">Improved engagement scores</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric3" name="successMetrics" value="productivity">
+                            <label for="metric3">Increased productivity</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric4" name="successMetrics" value="customer-satisfaction">
+                            <label for="metric4">Better customer satisfaction</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric5" name="successMetrics" value="internal-promotions">
+                            <label for="metric5">More internal promotions</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric6" name="successMetrics" value="revenue-growth">
+                            <label for="metric6">Revenue/profit growth</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric7" name="successMetrics" value="culture-scores">
+                            <label for="metric7">Culture assessment improvements</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="metric8" name="successMetrics" value="hr-issues">
+                            <label for="metric8">Fewer HR complaints/issues</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="commitment">Our programs require 12-18 months and active participation from leadership. What concerns do you have about this timeline and commitment? <span class="required">*</span></label>
+                    <textarea id="commitment" name="commitment" placeholder="Be honest about potential obstacles: budget approval process, leadership team buy-in, competing priorities, past experiences with long-term initiatives, etc." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="decisionMaker">Are you the primary decision maker for this investment? <span class="required">*</span></label>
+                    <select id="decisionMaker" name="decisionMaker" required>
+                        <option value="">Select One</option>
+                        <option value="yes">Yes, I make the final decision</option>
+                        <option value="influence">I have strong influence but need CEO/board approval</option>
+                        <option value="committee">Decision made by committee (I'm part of it)</option>
+                        <option value="recommend">I recommend, but others decide</option>
+                        <option value="research">I'm just doing research for someone else</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="investment-section">
+                    <h3>Investment Expectations</h3>
+                    <div class="form-group">
+                        <label for="budget">What budget range are you prepared to invest in comprehensive leadership development? <span class="required">*</span></label>
+                        <select id="budget" name="budget" required>
+                            <option value="">Select Range</option>
+                            <option value="25-50k">$25,000 - $50,000</option>
+                            <option value="50-75k">$50,000 - $75,000</option>
+                            <option value="75-100k">$75,000 - $100,000</option>
+                            <option value="100-150k">$100,000 - $150,000</option>
+                            <option value="150k+">$150,000+</option>
+                            <option value="unsure">I need to understand the value first</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="roi">What would a successful leadership development program need to deliver to justify the investment for you?</label>
+                        <textarea id="roi" name="roi" placeholder="Examples: 20% reduction in turnover, $500K in cost savings, 3-point increase in engagement scores, ability to promote 5 people internally, etc."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="section-title">Additional Information</h2>
+                
+                <div class="form-group full-width">
+                    <label for="whyNow">Why is now the right time to invest in leadership development? What's changed or what's driving this initiative?</label>
+                    <textarea id="whyNow" name="whyNow" placeholder="Examples: New CEO, board pressure, competitive threats, growth phase, recent crisis, employee survey results, etc."></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="idealOutcome">Imagine it's 18 months from now and our leadership development program was wildly successful. What would be different about your organization?</label>
+                    <textarea id="idealOutcome" name="idealOutcome" placeholder="Paint a picture of success: How would leaders behave differently? What would employees say? How would customers notice? What business results would you see?"></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="questions">What questions do you have for us about our approach or process?</label>
+                    <textarea id="questions" name="questions" placeholder="Any concerns, specific questions about methodology, timeline, pricing, etc."></textarea>
+                </div>
+            </div>
+            
+            <div class="submit-section">
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Application</button>
+                
+                <div class="loading" id="loadingMessage">
+                    <p>📧 Sending your application...</p>
+                </div>
+                
+                <div class="success-message" id="successMessage">
+                    <h3>✅ Application Submitted Successfully!</h3>
+                    <p>Thank you for your detailed application. We'll review it within 2 business days and contact you if we believe we can help you achieve your leadership transformation goals.</p>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    <h3>❌ Submission Error</h3>
+                    <p>There was an error submitting your application. Please try again or contact us directly.</p>
+                </div>
+                
+                <div class="next-steps">
+                    <strong>What happens next:</strong><br>
+                    We'll review your application within 2 business days. If we believe we can help you achieve your goals, we'll schedule a 30-minute strategy call to discuss your situation in detail and determine if we're the right fit for each other.
+                    <br><br>
+                    <em>Not every organization is ready for our level of transformation. We only work with companies where we're confident we can deliver exceptional results.</em>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Progress bar functionality
+        function updateProgress() {
+            const form = document.getElementById('applicationForm');
+            const requiredFields = form.querySelectorAll('[required]');
+            let completedFields = 0;
+            
+            requiredFields.forEach(field => {
+                if (field.type === 'checkbox' || field.type === 'radio') {
+                    const group = form.querySelectorAll(`[name="${field.name}"]`);
+                    if (Array.from(group).some(input => input.checked)) {
