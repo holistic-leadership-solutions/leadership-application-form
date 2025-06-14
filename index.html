@@ -277,26 +277,107 @@
             display: none;
             margin-top: 20px;
             color: #0C3C60;
+            padding: 20px;
+            background: #f0f4f8;
+            border-radius: 8px;
+            border: 2px solid #0C3C60;
+        }
+        
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0C3C60;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .success-message {
             display: none;
-            background: #d4edda;
-            color: #155724;
-            padding: 20px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
             margin-top: 20px;
-            border: 1px solid #c3e6cb;
+            text-align: left;
+        }
+        
+        .success-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .success-message ul {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        
+        .success-message li {
+            margin-bottom: 8px;
         }
         
         .error-message {
             display: none;
-            background: #f8d7da;
-            color: #721c24;
-            padding: 20px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
             margin-top: 20px;
-            border: 1px solid #f5c6cb;
+        }
+        
+        .error-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            text-align: left;
+        }
+        
+        .debug-info h4 {
+            color: #0C3C60;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1.1rem;
+        }
+        
+        .debug-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .debug-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .debug-success {
+            color: #27ae60;
+        }
+        
+        .debug-error {
+            color: #e74c3c;
+        }
+        
+        .debug-info-text {
+            color: #0C3C60;
         }
         
         .next-steps {
@@ -377,6 +458,35 @@
                 </div>
                 
                 <p><strong>This application takes 8-10 minutes to complete thoughtfully.</strong> Your responses help us understand if we can deliver the transformational results you're seeking.</p>
+            </div>
+        </div>
+        
+        <div class="submit-section" style="display: none;" id="messagesSection">
+            <div class="loading" id="loadingMessage">
+                <p>📧 Sending your application...</p>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                <h3>🎉 Application Submitted Successfully!</h3>
+                <p>Thank you for your detailed partnership application. We have received your submission and will review it carefully.</p>
+                <p><strong>What happens next:</strong></p>
+                <ul>
+                    <li>You will receive a confirmation email shortly</li>
+                    <li>Our team will review your application within 2 business days</li>
+                    <li>If we believe we can help you achieve your leadership transformation goals, we'll schedule a 30-minute strategy call</li>
+                    <li>We only work with organizations where we're confident we can deliver exceptional results</li>
+                </ul>
+                <p><em>Not every organization is ready for our level of transformation. We appreciate your interest and will be in touch soon.</em></p>
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                <h3>⚠️ Application Submission Error</h3>
+                <p id="errorDetails">There was an error submitting your application. Please check the details below and try again, or contact us directly.</p>
+            </div>
+            
+            <div class="debug-info" id="debugInfo">
+                <h4>🔍 Debug Information:</h4>
+                <div id="debugContent"></div>
             </div>
         </div>
         
@@ -649,20 +759,6 @@
             <div class="submit-section">
                 <button type="submit" class="submit-btn" id="submitBtn">Submit Application</button>
                 
-                <div class="loading" id="loadingMessage">
-                    <p>📧 Sending your application...</p>
-                </div>
-                
-                <div class="success-message" id="successMessage">
-                    <h3>✅ Application Submitted Successfully!</h3>
-                    <p>Thank you for your detailed application. We'll review it within 2 business days and contact you if we believe we can help you achieve your leadership transformation goals.</p>
-                </div>
-                
-                <div class="error-message" id="errorMessage">
-                    <h3>❌ Submission Error</h3>
-                    <p>There was an error submitting your application. Please try again or contact us directly.</p>
-                </div>
-                
                 <div class="next-steps">
                     <strong>What happens next:</strong><br>
                     We'll review your application within 2 business days. If we believe we can help you achieve your goals, we'll schedule a 30-minute strategy call to discuss your situation in detail and determine if we're the right fit for each other.
@@ -674,6 +770,44 @@
     </div>
 
     <script>
+        // IMPORTANT: Your Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3T_7rqDluoGFFYxkyrXpESMhsk4kpKll1RwWrWTDo9QVoLlALCPDElbYrgIHW0uk6/exec';
+        
+        // Debug function
+        function debugLog(message, type = 'info') {
+            console.log(message);
+            const debugContent = document.getElementById('debugContent');
+            const debugInfo = document.getElementById('debugInfo');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            let className = 'debug-info-text';
+            if (type === 'success') className = 'debug-success';
+            if (type === 'error') className = 'debug-error';
+            
+            debugContent.innerHTML += `<div class="debug-entry ${className}">${timestamp}: ${message}</div>`;
+            debugInfo.style.display = 'block';
+            
+            // Scroll to bottom of debug info
+            debugContent.scrollTop = debugContent.scrollHeight;
+        }
+
+        // Show/hide elements
+        function showElement(elementId) {
+            document.getElementById(elementId).style.display = 'block';
+        }
+
+        function hideElement(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+
+        function showMessagesSection() {
+            document.getElementById('messagesSection').style.display = 'block';
+            document.getElementById('messagesSection').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+
         // Progress bar functionality
         function updateProgress() {
             const form = document.getElementById('applicationForm');
@@ -684,3 +818,223 @@
                 if (field.type === 'checkbox' || field.type === 'radio') {
                     const group = form.querySelectorAll(`[name="${field.name}"]`);
                     if (Array.from(group).some(input => input.checked)) {
+                        completedFields++;
+                    }
+                } else if (field.value.trim()) {
+                    completedFields++;
+                }
+            });
+            
+            const progressPercentage = (completedFields / requiredFields.length) * 100;
+            document.getElementById('progressBar').style.width = progressPercentage + '%';
+        }
+
+        // Collect form data including checkboxes
+        function collectFormData() {
+            const formData = new FormData();
+            const form = document.getElementById('applicationForm');
+            
+            // Collect all form inputs
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    if (input.checked) {
+                        // Handle multiple checkboxes with the same name
+                        const existingValue = formData.get(input.name);
+                        if (existingValue) {
+                            formData.set(input.name, existingValue + ', ' + input.value);
+                        } else {
+                            formData.set(input.name, input.value);
+                        }
+                    }
+                } else if (input.type === 'radio') {
+                    if (input.checked) {
+                        formData.set(input.name, input.value);
+                    }
+                } else if (input.value.trim()) {
+                    formData.set(input.name, input.value.trim());
+                }
+            });
+
+            // Add timestamp
+            formData.set('timestamp', new Date().toISOString());
+            
+            return formData;
+        }
+
+        // Validate required fields
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+            let firstInvalidField = null;
+            let missingFields = [];
+
+            requiredFields.forEach(field => {
+                let fieldValid = false;
+                let fieldName = field.closest('.form-group').querySelector('label').textContent.replace(' *', '');
+                
+                if (field.type === 'checkbox') {
+                    // For checkbox groups, check if at least one is selected
+                    const checkboxGroup = document.querySelectorAll(`input[name="${field.name}"]`);
+                    fieldValid = Array.from(checkboxGroup).some(cb => cb.checked);
+                } else if (field.type === 'radio') {
+                    // For radio groups, check if one is selected
+                    const radioGroup = document.querySelectorAll(`input[name="${field.name}"]`);
+                    fieldValid = Array.from(radioGroup).some(radio => radio.checked);
+                } else {
+                    fieldValid = field.value.trim() !== '';
+                }
+                
+                if (!fieldValid) {
+                    isValid = false;
+                    missingFields.push(fieldName);
+                    if (!firstInvalidField) {
+                        firstInvalidField = field;
+                    }
+                }
+            });
+
+            if (!isValid) {
+                debugLog(`Form validation failed. Missing fields: ${missingFields.join(', ')}`, 'error');
+                if (firstInvalidField) {
+                    firstInvalidField.focus();
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                debugLog('✓ Form validation passed successfully', 'success');
+            }
+
+            return isValid;
+        }
+
+        // Submit form
+        async function submitForm(event) {
+            event.preventDefault();
+            
+            debugLog('🚀 Form submission started');
+            debugLog(`📡 Script URL: ${GOOGLE_SCRIPT_URL}`);
+            
+            // Validate form first
+            if (!validateForm()) {
+                showMessagesSection();
+                document.getElementById('errorDetails').innerHTML = `
+                    <strong>Please fill in all required fields.</strong><br>
+                    Check the form above and complete all fields marked with a red asterisk (*).
+                `;
+                showElement('errorMessage');
+                return;
+            }
+            
+            // Show messages section and loading
+            showMessagesSection();
+            hideElement('successMessage');
+            hideElement('errorMessage');
+            showElement('loadingMessage');
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                debugLog('📝 Collecting form data...');
+                const formData = collectFormData();
+                
+                // Log basic form info for debugging (no sensitive data)
+                const email = formData.get('email');
+                const company = formData.get('company');
+                const firstName = formData.get('firstName');
+                
+                debugLog(`👤 Applicant: ${firstName} from ${company}`);
+                debugLog(`📧 Email: ${email}`);
+                debugLog('✓ Form data collected successfully');
+                
+                debugLog('🌐 Sending request to Google Apps Script...');
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Required for Google Apps Script
+                    body: formData
+                });
+                
+                debugLog('📨 Request sent successfully');
+                debugLog(`📊 Response status: ${response.status}`);
+                debugLog(`🔄 Response type: ${response.type}`);
+                
+                // With no-cors mode, we can't read the actual response
+                // If no error was thrown, we assume success
+                hideElement('loadingMessage');
+                showElement('successMessage');
+                
+                debugLog('🎉 Form submitted successfully!', 'success');
+                debugLog('📧 Confirmation email should arrive shortly', 'success');
+                debugLog('📊 Data should appear in Google Sheets', 'success');
+                
+                // Reset form
+                document.getElementById('applicationForm').reset();
+                updateProgress(); // Reset progress bar
+                
+            } catch (error) {
+                debugLog(`❌ Error occurred: ${error.message}`, 'error');
+                debugLog(`🔧 Error type: ${error.name}`, 'error');
+                
+                hideElement('loadingMessage');
+                document.getElementById('errorDetails').innerHTML = `
+                    <strong>Submission Error:</strong> ${error.message}<br><br>
+                    <strong>Troubleshooting Steps:</strong>
+                    <ul style="margin-top: 10px; text-align: left;">
+                        <li>Check your internet connection</li>
+                        <li>Try refreshing the page and submitting again</li>
+                        <li>Contact us directly if the problem persists</li>
+                    </ul>
+                    <br>
+                    <strong>Technical Details:</strong><br>
+                    Script URL: ${GOOGLE_SCRIPT_URL}<br>
+                    Error Type: ${error.name}
+                `;
+                showElement('errorMessage');
+                
+                debugLog('📞 Please contact support if error persists', 'error');
+                
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+            }
+        }
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            debugLog('🎯 Partnership Application Form initialized');
+            debugLog(`🔗 Google Apps Script URL configured: ${GOOGLE_SCRIPT_URL}`);
+            
+            // Validate script URL configuration
+            if (GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID_HERE')) {
+                showMessagesSection();
+                document.getElementById('errorDetails').innerHTML = `
+                    <strong>Configuration Error:</strong> Google Apps Script URL not configured.<br>
+                    Please update the GOOGLE_SCRIPT_URL variable with your actual script URL.
+                `;
+                showElement('errorMessage');
+                debugLog('❌ ERROR: Script URL not configured properly', 'error');
+            } else {
+                debugLog('✓ Script URL appears to be configured correctly', 'success');
+                debugLog('✓ Form ready to accept submissions', 'success');
+            }
+            
+            // Add form submit event listener
+            document.getElementById('applicationForm').addEventListener('submit', submitForm);
+            
+            // Add progress tracking
+            const form = document.getElementById('applicationForm');
+            form.addEventListener('input', updateProgress);
+            form.addEventListener('change', updateProgress);
+            
+            // Initial progress update
+            updateProgress();
+            
+            debugLog('✅ All event listeners attached successfully');
+        });
+    </script>
+</body>
+</html>
