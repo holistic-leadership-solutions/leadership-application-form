@@ -338,46 +338,9 @@
             margin-bottom: 15px;
         }
         
+        /* HIDE DEBUG INFO FOR PRODUCTION */
         .debug-info {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            max-height: 400px;
-            overflow-y: auto;
-            display: none;
-            text-align: left;
-        }
-        
-        .debug-info h4 {
-            color: #0C3C60;
-            margin-bottom: 15px;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 1.1rem;
-        }
-        
-        .debug-entry {
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .debug-entry:last-child {
-            border-bottom: none;
-        }
-        
-        .debug-success {
-            color: #27ae60;
-        }
-        
-        .debug-error {
-            color: #e74c3c;
-        }
-        
-        .debug-info-text {
-            color: #0C3C60;
+            display: none !important;
         }
         
         .next-steps {
@@ -481,9 +444,10 @@
             
             <div class="error-message" id="errorMessage">
                 <h3>⚠️ Application Submission Error</h3>
-                <p id="errorDetails">There was an error submitting your application. Please check the details below and try again, or contact us directly.</p>
+                <p id="errorDetails">There was an error submitting your application. Please try again, or contact us directly if the problem persists.</p>
             </div>
             
+            <!-- DEBUG INFO HIDDEN IN PRODUCTION -->
             <div class="debug-info" id="debugInfo">
                 <h4>🔍 Debug Information:</h4>
                 <div id="debugContent"></div>
@@ -770,11 +734,16 @@
     </div>
 
     <script>
-        // UPDATED: Your new Google Apps Script Web App URL
+        // PRODUCTION VERSION - DEBUG LOGGING DISABLED
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLeg9m2dFiQm49wtNlwsKd0bj__N9FnnsKMlL7Vqd014sVHR0kuR1ICDT0m8bWDro/exec';
         
-        // Debug function
+        // Production flag - set to false to hide debug info
+        const ENABLE_DEBUG = false;
+        
+        // Debug function - only logs if debug is enabled
         function debugLog(message, type = 'info') {
+            if (!ENABLE_DEBUG) return; // Skip all debug logging in production
+            
             console.log(message);
             const debugContent = document.getElementById('debugContent');
             const debugInfo = document.getElementById('debugInfo');
@@ -829,7 +798,7 @@
             document.getElementById('progressBar').style.width = progressPercentage + '%';
         }
 
-        // Collect form data including checkboxes - FIXED for exact CSV headers
+        // Collect form data including checkboxes
         function collectFormData() {
             const formData = new FormData();
             const form = document.getElementById('applicationForm');
@@ -942,13 +911,15 @@
                 debugLog('📝 Collecting form data...');
                 const formData = collectFormData();
                 
-                // Log basic form info for debugging (no sensitive data)
-                const email = formData.get('Email Address');
-                const company = formData.get('Company Name');
-                const firstName = formData.get('First Name');
-                
-                debugLog(`👤 Applicant: ${firstName} from ${company}`);
-                debugLog(`📧 Email: ${email}`);
+                // Log basic form info for debugging (only if debug enabled)
+                if (ENABLE_DEBUG) {
+                    const email = formData.get('Email Address');
+                    const company = formData.get('Company Name');
+                    const firstName = formData.get('First Name');
+                    
+                    debugLog(`👤 Applicant: ${firstName} from ${company}`);
+                    debugLog(`📧 Email: ${email}`);
+                }
                 debugLog('✓ Form data collected successfully');
                 
                 debugLog('🌐 Sending request to Google Apps Script...');
@@ -983,16 +954,7 @@
                 hideElement('loadingMessage');
                 document.getElementById('errorDetails').innerHTML = `
                     <strong>Submission Error:</strong> ${error.message}<br><br>
-                    <strong>Troubleshooting Steps:</strong>
-                    <ul style="margin-top: 10px; text-align: left;">
-                        <li>Check your internet connection</li>
-                        <li>Try refreshing the page and submitting again</li>
-                        <li>Contact us directly if the problem persists</li>
-                    </ul>
-                    <br>
-                    <strong>Technical Details:</strong><br>
-                    Script URL: ${GOOGLE_SCRIPT_URL}<br>
-                    Error Type: ${error.name}
+                    <strong>Please try again or contact us directly if the problem persists.</strong>
                 `;
                 showElement('errorMessage');
                 
